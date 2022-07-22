@@ -6,10 +6,22 @@ let localLatitude;
 let localLongitude;
 let targetLatitude;
 let targetLongitude;
+let alpha;
+let beta;
+let gamma;
+let gyroReady = false;
 let positionReady = false;
 let targetReady = false;
 // TOGLIERE STA MERDA
 document.querySelector("#input1").value = localStorage.getItem("api-key") ?? "";
+
+window.addEventListener("deviceorientation", function(e) 
+    {
+        alpha = 360 - e.alpha;
+        beta = e.beta;
+        gamma = e.gamma;
+        gyroReady = true;
+    }, true);
 
 // Chiedo posizione per inizializzare mappa
 navigator.geolocation.getCurrentPosition(
@@ -102,7 +114,10 @@ setInterval(function()
         if(!targetReady)
             return;
 
-        angle = 360 * Math.tanh(Math.sqrt((localLatitude - targetLatitude)^2 + (localLongitude - targetLongitude)^2)) / (Math.PI * 2);
+        if(!gyroReady)
+            return;
+
+        angle = 360 * Math.tanh(Math.sqrt((localLatitude - targetLatitude)^2 + (localLongitude - targetLongitude)^2)) / (Math.PI * 2) - alpha;
         document.documentElement.style.setProperty("--angle", angle + "deg");
 
     }, 1000);
