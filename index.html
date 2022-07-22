@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="script.js" defer></script>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css">
+        <script src="https://js.arcgis.com/4.24/"></script>
+    </head>
+    <body>
+        <div id="main-container">
+            <div>
+                <input id="input1" type="text" placeholder="Scrivi qui"/>
+                <button id="button1">Bottone</button>
+                <p id="label1">Angle: 0deg</p>
+                <div class="slidecontainer">
+                    <input type="range" min="0" max="100" value="0" class="slider" id="slider1">
+                </div>
+            </div>
+            <div id="arrow-container">
+                <div id="main-arrow"></div>
+            </div>
+            <div id="viewDiv"></div>
+        </div>
+    </body>
+</html>
