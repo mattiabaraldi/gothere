@@ -9,7 +9,7 @@ let targetLongitude;
 let positionReady = false;
 let targetReady = false;
 // TOGLIERE STA MERDA
-document.querySelector("#input1").value = myAPIKey ?? "";
+document.querySelector("#input1").value = localStorage.getItem("api-key") ?? "";
 
 // Chiedo posizione per inizializzare mappa
 navigator.geolocation.getCurrentPosition(
