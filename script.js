@@ -118,7 +118,7 @@ setInterval(function()
             return;
 
         if(targetLongitude != localLongitude)
-            angle = 360 * Math.tanh((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI * 2) - alpha;
+            angle = 360 * Math.tanh((targetLongitude - localLongitude)/(targetLatitude - localLatitude)) / (Math.PI * 2) - alpha;
         else
             angle = 0;
         document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
