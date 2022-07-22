@@ -21,7 +21,6 @@ window.addEventListener("deviceorientation", function(e)
         beta = e.beta;
         gamma = e.gamma;
         gyroReady = true;
-        document.querySelector("#label1").innerHTML = alpha + " " + beta + " " + gamma + " " + e.absolute;
     }, true);
 
 // Chiedo posizione per inizializzare mappa
@@ -118,7 +117,8 @@ setInterval(function()
         if(!gyroReady)
             return;
 
-        angle = 360 * Math.tanh(Math.sqrt((localLatitude - targetLatitude)^2 + (localLongitude - targetLongitude)^2)) / (Math.PI * 2) - alpha;
+        angle = 360 * Math.tanh(Math.sqrt((localLatitude - targetLatitude)^2 + (localLongitude - targetLongitude)^2)) / (Math.PI * 2) /*- alpha*/;
+        document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha;
         document.documentElement.style.setProperty("--angle", angle + "deg");
 
     }, 1000);
