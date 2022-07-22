@@ -17,7 +17,7 @@ let targetReady = false;
 // TOGLIERE STA MERDA
 document.querySelector("#input1").value = localStorage.getItem("api-key") ?? "";
 
-window.addEventListener("deviceorientation", function(e) 
+window.addEventListener("deviceorientationabsolute", function(e) 
     {
         alpha = 360 - e.alpha;
         beta = e.beta;
