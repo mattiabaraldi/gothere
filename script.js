@@ -7,6 +7,7 @@ let localLatitude;
 let localLongitude;
 let targetLatitude;
 let targetLongitude;
+let lastAngle = 0;
 let alpha;
 let beta;
 let gamma;
