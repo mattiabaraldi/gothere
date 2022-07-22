@@ -128,7 +128,7 @@ setInterval(function()
         {
             let delta = ((((angle - lastAngle) % 360) + 540) % 360) - 180;
             angle = lastAngle + delta;
-            //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
+            document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
             document.documentElement.style.setProperty("--angle", angle + "deg");
             lastAngle = angle;
         }
