@@ -40,7 +40,7 @@ body
     background-image: url("./arrow.svg");
     background-repeat: no-repeat;
     transform: scale(70%) rotate(var(--angle));
-    transition: all 0.2s ease-in-out;
+    transition: all 1s ease-in-out;
 }
 
 #viewDiv
