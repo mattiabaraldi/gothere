@@ -21,7 +21,7 @@ window.addEventListener("deviceorientation", function(e)
         beta = e.beta;
         gamma = e.gamma;
         gyroReady = true;
-        document.querySelector("#label1").innerHTML = e.alpha + " " + beta + " " + gamma + " " + e.absolute;
+        document.querySelector("#label1").innerHTML = alpha + " " + beta + " " + gamma + " " + e.absolute;
     }, true);
 
 // Chiedo posizione per inizializzare mappa
