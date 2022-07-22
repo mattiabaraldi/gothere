@@ -133,7 +133,7 @@ setInterval(function()
             lastAngle = angle;
         }
 
-    }, 1000);
+    }, 500);
 
 slider1.oninput = function()
 {
