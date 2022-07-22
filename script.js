@@ -117,7 +117,10 @@ setInterval(function()
         if(!gyroReady)
             return;
 
-        angle = 360 * Math.tanh(Math.sqrt((localLatitude - targetLatitude)^2 + (localLongitude - targetLongitude)^2)) / (Math.PI * 2) /*- alpha*/;
+        if(targetLongitude != localLongitude)
+            angle = 360 * Math.tanh((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI * 2) - alpha;
+        else
+            angle = 0;
         document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha;
         document.documentElement.style.setProperty("--angle", angle + "deg");
 
