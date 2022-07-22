@@ -1,6 +1,7 @@
 const button1 = document.querySelector("#button1");
 const label1 = document.querySelector("#label1");
 const slider1 = document.querySelector("#slider1");
+const mainArrow = document.querySelector("#main-arrow");
 
 let localLatitude;
 let localLongitude;
@@ -116,13 +117,20 @@ setInterval(function()
 
         if(!gyroReady)
             return;
-
+        
         if(targetLongitude != localLongitude)
             angle = 360 * Math.tanh((targetLongitude - localLongitude)/(targetLatitude - localLatitude)) / (Math.PI * 2) - alpha;
         else
             angle = 0;
-        document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
-        document.documentElement.style.setProperty("--angle", angle + "deg");
+        
+        if(angle != lastAngle)
+        {
+            let delta = ((((angle - lastAngle) % 360) + 540) % 360) - 180;
+            angle = lastAngle + delta;
+            //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
+            document.documentElement.style.setProperty("--angle", angle + "deg");
+            lastAngle = angle;
+        }
 
     }, 1000);
 
