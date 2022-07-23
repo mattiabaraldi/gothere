@@ -17,12 +17,26 @@ let targetReady = false;
 // TOGLIERE STA MERDA
 document.querySelector("#input1").value = localStorage.getItem("api-key") ?? "";
 
+const sensor = new AbsoluteOrientationSensor();
+Promise.all([navigator.permissions.query({ name: "accelerometer" }),
+             navigator.permissions.query({ name: "magnetometer" }),
+             navigator.permissions.query({ name: "gyroscope" })])
+       .then(results => {
+         if (results.every(result => result.state === "granted")) {
+           sensor.start();
+           console.log("Permessi presenti");
+         } else {
+           console.log("No permissions to use AbsoluteOrientationSensor.");
+         }
+   });
+
 window.addEventListener("deviceorientationabsolute", function(e) 
     {
         alpha = 360 - e.alpha;
         beta = e.beta;
         gamma = e.gamma;
         gyroReady = true;
+        document.querySelector("#label1").innerHTML = sensor.quaternion;
     }, true);
 
 // Chiedo posizione per inizializzare mappa
@@ -128,7 +142,7 @@ setInterval(function()
         {
             let delta = ((((angle - lastAngle) % 360) + 540) % 360) - 180;
             angle = lastAngle + delta;
-            document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
+            //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
             document.documentElement.style.setProperty("--angle", angle + "deg");
             lastAngle = angle;
         }
