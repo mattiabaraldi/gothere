@@ -36,7 +36,7 @@ window.addEventListener("deviceorientationabsolute", function(e)
         beta = e.beta;
         gamma = e.gamma;
         gyroReady = true;
-        document.querySelector("#label1").innerHTML = sensor.quaternion;
+        label1.innerHTML = alpha;
     }, true);
 
 // Chiedo posizione per inizializzare mappa
@@ -152,7 +152,6 @@ setInterval(function()
 slider1.oninput = function()
 {
     let angle = 360 * this.value / 100.0;
-    label1.innerHTML = "Angle: " + angle + "deg";
     document.documentElement.style.setProperty("--angle", angle + "deg");
 }
 
