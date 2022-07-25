@@ -8,6 +8,8 @@ let localLongitude;
 let targetLatitude;
 let targetLongitude;
 let lastAngle = 0;
+let currentAngle = 0;
+let angle = 0;
 let alpha;
 let beta;
 let gamma;
@@ -143,17 +145,26 @@ setInterval(function()
             let delta = ((((angle - lastAngle) % 360) + 540) % 360) - 180;
             angle = lastAngle + delta;
             //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
-            document.documentElement.style.setProperty("--angle", angle + "deg");
+            //document.documentElement.style.setProperty("--angle", angle + "deg");
             lastAngle = angle;
         }
 
     }, 500);
 
-slider1.oninput = function()
+setInterval(function() 
+    {
+        if(currentAngle != angle)
+        {
+            angle = angle + 1;
+            document.documentElement.style.setProperty("--angle", angle + "deg");
+        }
+    }, 33);
+
+/*slider1.oninput = function()
 {
     let angle = 360 * this.value / 100.0;
     document.documentElement.style.setProperty("--angle", angle + "deg");
-}
+}*/
 
 button1.addEventListener("click", clickButton1);
 function clickButton1(event)

@@ -39,7 +39,6 @@ body
     background-image: url("./arrow.svg");
     background-repeat: no-repeat;
     transform: scale(70%) rotate(var(--angle));
-    transition: all 1s linear;
 }
 
 #viewDiv
