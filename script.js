@@ -38,7 +38,6 @@ window.addEventListener("deviceorientationabsolute", function(e)
         beta = e.beta;
         gamma = e.gamma;
         gyroReady = true;
-        label1.innerHTML = alpha;
     }, true);
 
 // Chiedo posizione per inizializzare mappa
@@ -137,14 +136,18 @@ setInterval(function()
         
         currentAngle = targetAngle;
 
-        if(targetLongitude != localLongitude)
-            targetAngle = 90 - 360 * Math.atan((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI * 2) - alpha;
+        if(targetLatitude != localLatitude)
+            targetAngle = 90 - 180 * Math.atan((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI) - alpha;
         else
             targetAngle = 0;
         
+        let debugAngle = targetAngle;
+
         let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
         targetAngle = currentAngle + delta;
-        //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
+
+        debugAngle += " " + targetAngle;
+        label1.innerHTML = debugAngle;
         document.documentElement.style.setProperty("--angle", targetAngle + "deg");
 
     }, 500);
