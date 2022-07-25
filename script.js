@@ -138,7 +138,7 @@ setInterval(function()
         currentAngle = targetAngle;
 
         if(targetLongitude != localLongitude)
-            targetAngle = 90 - 360 * Math.tanh((targetLongitude - localLongitude)/(targetLatitude - localLatitude)) / (Math.PI * 2) - alpha;
+            targetAngle = 90 - 360 * Math.tanh((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI * 2) - alpha;
         else
             targetAngle = 0;
         
