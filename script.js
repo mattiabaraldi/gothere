@@ -9,7 +9,7 @@ let targetLatitude;
 let targetLongitude;
 let lastAngle = 0;
 let currentAngle = 0;
-let angle = 0;
+let targetAngle = 0;
 let alpha;
 let beta;
 let gamma;
@@ -136,27 +136,23 @@ setInterval(function()
             return;
         
         if(targetLongitude != localLongitude)
-            angle = 90 - 360 * Math.tanh((targetLongitude - localLongitude)/(targetLatitude - localLatitude)) / (Math.PI * 2) - alpha;
+            targetAngle = 90 - 360 * Math.tanh((targetLongitude - localLongitude)/(targetLatitude - localLatitude)) / (Math.PI * 2) - alpha;
         else
-            angle = 0;
-        
-        if(angle != lastAngle)
-        {
-            let delta = ((((angle - lastAngle) % 360) + 540) % 360) - 180;
-            angle = lastAngle + delta;
-            //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
-            //document.documentElement.style.setProperty("--angle", angle + "deg");
-            lastAngle = angle;
-        }
+            targetAngle = 0;
+
+        let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
+        targetAngle = currentAngle + delta;
+        //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
+        //document.documentElement.style.setProperty("--angle", angle + "deg");
 
     }, 500);
 
 setInterval(function() 
     {
-        if(currentAngle != angle)
+        if(currentAngle != targetAngle)
         {
-            angle = angle + 1;
-            document.documentElement.style.setProperty("--angle", angle + "deg");
+            currentAngle = currentAngle + 1;
+            document.documentElement.style.setProperty("--angle", currentAngle + "deg");
         }
     }, 33);
 
