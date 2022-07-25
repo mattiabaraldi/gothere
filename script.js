@@ -138,12 +138,12 @@ setInterval(function()
         currentAngle = targetAngle;
 
         if(targetLongitude != localLongitude)
-            targetAngle = 90 - 360 * Math.tanh((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI * 2) - alpha;
+            targetAngle = 90 - 360 * Math.atan((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI * 2) - alpha;
         else
             targetAngle = 0;
         
-        //let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
-        //targetAngle = currentAngle + delta;
+        let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
+        targetAngle = currentAngle + delta;
         //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
         document.documentElement.style.setProperty("--angle", targetAngle + "deg");
 
