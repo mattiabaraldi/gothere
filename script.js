@@ -135,26 +135,28 @@ setInterval(function()
         if(!gyroReady)
             return;
         
+        currentAngle = targetAngle;
+
         if(targetLongitude != localLongitude)
             targetAngle = 90 - 360 * Math.tanh((targetLongitude - localLongitude)/(targetLatitude - localLatitude)) / (Math.PI * 2) - alpha;
         else
             targetAngle = 0;
-
+        
         let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
         targetAngle = currentAngle + delta;
         //document.querySelector("#label1").innerHTML = "   " + localLatitude + " " + targetLatitude + " " + localLongitude + " " + targetLongitude + " " + alpha + " " + angle;
-        //document.documentElement.style.setProperty("--angle", angle + "deg");
+        document.documentElement.style.setProperty("--angle", targetAngle + "deg");
 
     }, 500);
 
-setInterval(function() 
+/*setInterval(function() 
     {
         if(currentAngle != targetAngle)
         {
             currentAngle = currentAngle + 1;
             document.documentElement.style.setProperty("--angle", currentAngle + "deg");
         }
-    }, 33);
+    }, 33);*/
 
 /*slider1.oninput = function()
 {
