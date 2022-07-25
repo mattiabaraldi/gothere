@@ -138,7 +138,7 @@ setInterval(function()
         currentAngle = targetAngle;
 
         if(targetLatitude != localLatitude)
-            targetAngle = 90 - 180 * Math.atan((targetLatitude - localLatitude) / (targetLongitude - localLongitude)) / (Math.PI) - alpha;
+            targetAngle = 90 - 180 * Math.atan2((targetLatitude - localLatitude),(targetLongitude - localLongitude)) / (Math.PI) - alpha;
         else
             targetAngle = 0;
         
