@@ -51,3 +51,8 @@ body
     left: 35%;
     position: relative;
 }
+
+.debug-label
+{
+    font-size: large;
+}

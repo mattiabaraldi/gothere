@@ -1,5 +1,6 @@
 const button1 = document.querySelector("#button1");
 const label1 = document.querySelector("#label1");
+const label2 = document.querySelector("#label2");
 const slider1 = document.querySelector("#slider1");
 const mainArrow = document.querySelector("#main-arrow");
 
@@ -141,16 +142,25 @@ setInterval(function()
         else
             targetAngle = 0;
         
-        let debugAngle = targetAngle;
+        let debugAngle = normalizeNumber(targetAngle);
 
         let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
         targetAngle = currentAngle + delta;
 
-        debugAngle += " " + targetAngle;
+        debugAngle += " " + normalizeNumber(targetAngle) + " " + normalizeNumber(alpha);
         label1.innerHTML = debugAngle;
+        label2.innerHTML = normalizeNumber(targetLatitude) + " | " +
+                            normalizeNumber(localLatitude) + " | " +
+                            normalizeNumber(targetLongitude) + " | " +
+                            normalizeNumber(localLongitude) + " | ";
         document.documentElement.style.setProperty("--angle", targetAngle + "deg");
 
     }, 500);
+
+function normalizeNumber(number)
+{
+    return number.toFixed(4).padStart(8, "0");
+}
 
 /*setInterval(function() 
     {
