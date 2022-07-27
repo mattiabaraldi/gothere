@@ -1,8 +1,10 @@
 const button1 = document.querySelector("#button1");
-const label1 = document.querySelector("#label1");
-const label2 = document.querySelector("#label2");
+const mainText = document.querySelector("#main-text");
+const addressText = document.querySelector("#address-text");
 const slider1 = document.querySelector("#slider1");
 const mainArrow = document.querySelector("#main-arrow");
+const arrowContainer = document.querySelector("#arrow-container");
+const mapView = document.querySelector("#view-div");
 
 let localLatitude;
 let localLongitude;
@@ -17,8 +19,18 @@ let gamma;
 let gyroReady = false;
 let positionReady = false;
 let targetReady = false;
+let currentActiveObject = mapView;
 // TOGLIERE STA MERDA
 document.querySelector("#input1").value = localStorage.getItem("api-key") ?? "";
+
+document.querySelector('#gothere-button').addEventListener("click", function(e)
+{
+    if(targetReady)
+    {
+        document.querySelector("#map-container").classList.remove('opaque');
+        arrowContainer.classList.add('opaque');
+    }
+});
 
 const sensor = new AbsoluteOrientationSensor();
 Promise.all([navigator.permissions.query({ name: "accelerometer" }),
@@ -64,8 +76,8 @@ function displayMap(position)
         const view = new MapView({
             map: map,
             center: [localLongitude, localLatitude], // Longitude, latitude
-            zoom: 13, // Zoom level
-            container: "viewDiv", // Div element
+            zoom: 14, // Zoom level
+            container: "view-div", // Div element
             constraints: getConstraints(localLatitude, localLongitude),
             rotationEnabled: false // Disables map rotation
         });
@@ -78,12 +90,14 @@ function displayMap(position)
         search.on("search-complete", function(e) {
             let latitude = e.results[0].results[0].feature.geometry.latitude;
             let longitude = e.results[0].results[0].feature.geometry.longitude;
+            addressText.innerHTML = e.searchTerm;
             this.view.constraints = getConstraints(latitude, longitude);
             targetReady = true;
         });
 
         view.ui.add(search, "top-right"); //Add to the map
     });
+    document.querySelector("#map-container").classList.add('opaque');
 }
 
 function getConstraints(latitude, longitude)
@@ -100,7 +114,7 @@ function getConstraints(latitude, longitude)
                 xmax: longitude + latlongAllowance,
                 ymax: latitude + latlongAllowance,
             },
-            minScale: 50000, // User cannot zoom out beyond a scale of 1:500,000
+            minScale: 30000, // User cannot zoom out beyond a scale of 1:500,000
             maxScale: 0, // User can overzoom tiles
         }
 }
@@ -138,7 +152,7 @@ setInterval(function()
         currentAngle = targetAngle;
 
         if(targetLatitude != localLatitude)
-            targetAngle = 90 - 180 * Math.atan2((targetLatitude - localLatitude),(targetLongitude - localLongitude)) / (Math.PI) - alpha;
+            targetAngle = 90 -  Math.atan2((targetLatitude - localLatitude), (targetLongitude - localLongitude)) * (180 / Math.PI) - alpha;
         else
             targetAngle = 0;
         
@@ -148,11 +162,6 @@ setInterval(function()
         targetAngle = currentAngle + delta;
 
         debugAngle += " " + normalizeNumber(targetAngle) + " " + normalizeNumber(alpha);
-        label1.innerHTML = debugAngle;
-        label2.innerHTML = normalizeNumber(targetLatitude) + " | " +
-                            normalizeNumber(localLatitude) + " | " +
-                            normalizeNumber(targetLongitude) + " | " +
-                            normalizeNumber(localLongitude) + " | ";
         document.documentElement.style.setProperty("--angle", targetAngle + "deg");
 
     }, 500);
@@ -162,20 +171,10 @@ function normalizeNumber(number)
     return number.toFixed(4).padStart(8, "0");
 }
 
-/*setInterval(function() 
-    {
-        if(currentAngle != targetAngle)
-        {
-            currentAngle = currentAngle + 1;
-            document.documentElement.style.setProperty("--angle", currentAngle + "deg");
-        }
-    }, 33);*/
-
-/*slider1.oninput = function()
+function transitionToArrow()
 {
-    let angle = 360 * this.value / 100.0;
-    document.documentElement.style.setProperty("--angle", angle + "deg");
-}*/
+    arrowContainer.classList.toggle('transition');
+}
 
 button1.addEventListener("click", clickButton1);
 function clickButton1(event)
