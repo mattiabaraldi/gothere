@@ -2,9 +2,11 @@ const button1 = document.querySelector("#button1");
 const mainText = document.querySelector("#main-text");
 const addressText = document.querySelector("#address-text");
 const slider1 = document.querySelector("#slider1");
-const mainArrow = document.querySelector("#main-arrow");
 const arrowContainer = document.querySelector("#arrow-container");
+const mainArrow = document.querySelector("#main-arrow");
+const mapContainer = document.querySelector("#map-container");
 const mapView = document.querySelector("#view-div");
+const gothereButton = document.querySelector('#gothere-button');
 
 let localLatitude;
 let localLongitude;
@@ -26,15 +28,7 @@ let currentActiveObject = mapView;
 // TOGLIERE STA MERDA
 //document.querySelector("#input1").value = localStorage.getItem("api-key") ?? "";
 
-document.querySelector('#gothere-button').addEventListener("click", function(e)
-{
-    if(targetReady)
-    {
-        document.querySelector("#map-container").classList.remove('opaque');
-        arrowContainer.classList.add('opaque');
-    }
-});
-
+// Attivo sensore orientamento dispositivo
 const sensor = new AbsoluteOrientationSensor();
 Promise.all([navigator.permissions.query({ name: "accelerometer" }),
              navigator.permissions.query({ name: "magnetometer" }),
@@ -48,6 +42,7 @@ Promise.all([navigator.permissions.query({ name: "accelerometer" }),
          }
    });
 
+// Routine di aggiornamento orientamento
 window.addEventListener("deviceorientationabsolute", function(e) 
     {
         alpha = 360 - e.alpha;
@@ -56,7 +51,7 @@ window.addEventListener("deviceorientationabsolute", function(e)
         gyroReady = true;
     }, true);
 
-// Recupero chiave
+// Recupero chiave mappa
 const url = `/secrets/api.txt`;
 let APIKey;
 fetch(url)
@@ -168,6 +163,7 @@ setInterval(function()
         );
     }, 10000);
 
+// Giro freccia
 setInterval(function()
     {
         if(!positionReady)
@@ -185,26 +181,29 @@ setInterval(function()
             targetAngle = 90 -  Math.atan2((targetLatitude - localLatitude), (targetLongitude - localLongitude)) * (180 / Math.PI) - alpha;
         else
             targetAngle = 0;
-        
-        let debugAngle = normalizeNumber(targetAngle);
 
         let delta = ((((targetAngle - currentAngle) % 360) + 540) % 360) - 180;
         targetAngle = currentAngle + delta;
 
-        debugAngle += " " + normalizeNumber(targetAngle) + " " + normalizeNumber(alpha);
         document.documentElement.style.setProperty("--angle", targetAngle + "deg");
 
     }, 500);
-
-function normalizeNumber(number)
-{
-    return number.toFixed(4).padStart(8, "0");
-}
 
 function transitionToArrow()
 {
     arrowContainer.classList.toggle('transition');
 }
+
+gothereButton.addEventListener("click", function(e)
+{
+    if(targetReady)
+    {
+        mapContainer.classList.toggle('opaque');
+        arrowContainer.classList.toggle('opaque');
+        mapContainer.classList.toggle('transparent');
+        arrowContainer.classList.toggle('transparent');
+    }
+});
 
 /*button1.addEventListener("click", clickButton1);
 function clickButton1(event)

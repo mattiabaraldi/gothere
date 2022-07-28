@@ -1,38 +1,47 @@
-*
-{
+* {
     box-sizing: border-box;
 }
 
-
-@media (min-width: 50em) {
-    .variable-text {
-      font-size: 10vw;
-    }
-  }
-@media (min-width: 75em) {
-    .variable-text {
-      font-size: 2vw;
-    }
-  }
-
-.sassy-theme .esri-widget a {
-    background-color: green;
-}
-
-:root
-{
-    --arrow-size: 100px;
+:root {
+    --arrow-size: 300px;
     --angle: 0deg;
 }
 
-body
-{
+.title-text, .address-text {
+    font-family: 'Courier New', monospace;
+    margin: auto;
+    font-weight: bold;
+    text-align: center;
+}
+.title-text {
+    font-size: 10vw;
+}
+.address-text {
+    font-size: 5vw;
+}
+@media (min-width: 50em) {
+    .title-text {
+        font-size: 12vw;
+    }
+    .address-text {
+        font-size: 6vw;
+    }
+}
+@media (min-width: 75em) {
+    .title-text {
+        font-size: 4vw;
+    }
+    .address-text {
+        font-size: 2vw;
+    }
+}
+
+body {
     margin: 0px;
 }
 
-#header
-{
-    top: 30%;
+#header {
+    top: 20%;
     position: relative;
     width: 100%;
     display: flex;
@@ -41,8 +50,7 @@ body
     gap: 1em;
 }
 
-#gothere-button
-{
+#gothere-button {
     font-family: 'Courier New', monospace;
     padding: 15px 25px;
     margin: auto;
@@ -62,22 +70,19 @@ body
     transform: translateY(4px);
   }
 
-.big-text, .medium-text
-{
+.big-text, .medium-text {
     margin: 0;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
 }
 
-.medium-text
-{
+.medium-text {
     top: 10%;
     font-size: 2vw;
 }
 
-#main-container
-{
+#main-container {
     width: 100vw;
     height: 100vh;
     display: grid;
@@ -86,13 +91,11 @@ body
     position: relative;
 }
 
-.arrow, .map
-{
+.arrow, .map {
     grid-area: 2 / 1;
 }
 
-.arrow
-{
+.arrow {
     width: 100%;
     height: 100%;
     padding-bottom: 20%;
@@ -102,8 +105,7 @@ body
     transition: all 1s linear;
 }
 
-.map
-{
+.map {
     width: 80%;
     height: 80%;
     left: 10%;
@@ -112,28 +114,17 @@ body
     bottom: 10%;
     position: relative;
     opacity: 0;
-    transition: all 2s linear;
+    transition: all 1s linear;
 }
 
-.transparent
-{
-    opacity: 0%;
-}
-
-.opaque
-{
-    opacity: 100%;
-}
-
-#view-div
-{
+#view-div {
     width: 100%;
-    aspect-ratio: 1;
+    height: 100%;
+    padding-bottom: 10%;
     position: relative;
 }
 
-#main-arrow
-{
+#main-arrow {
     width: 100%;
     height: 100%;
     background-position: center;
@@ -143,7 +134,10 @@ body
     transition: all 1s linear;
 }
 
-.debug-label
-{
-    font-size: large;
+.transparent {
+    opacity: 0%;
+}
+
+.opaque {
+    opacity: 100%;
 }

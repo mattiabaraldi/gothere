@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html manifest="manifest.appcache">
     <head>
+        <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {"ccpaAcknowledgeOnDisplay":true,"consentOnContinuedBrowsing":false,"countryDetection":true,"enableCcpa":true,"floatingPreferencesButtonColor":"#FFFFFF00","floatingPreferencesButtonDisplay":"bottom-right","invalidateConsentWithoutLog":true,"perPurposeConsent":true,"purposes":"1,3,4,2","siteId":2749887,"cookiePolicyId":72064329,"lang":"en-GB", "banner":{ "acceptButtonDisplay":true,"closeButtonRejects":true,"customizeButtonDisplay":true,"explicitWithdrawal":true,"listPurposes":true,"logo":null,"position":"float-top-center","rejectButtonDisplay":true }};
+        </script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/ccpa/stub.js"></script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+        <meta name="viewport" content="initial-scale=0.8,maximum-scale=1,user-scalable=no" />
+        <meta charset="UTF-8">
         <script src="script.js" defer></script>
         <link rel="stylesheet" href="style.css" type="text/css">
         <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css">
@@ -9,17 +17,15 @@
     <body>
         <div id="main-container">
             <div>
-                <!--<input id="input1" type="text" placeholder="Scrivi qui"/>-->
-                <!--<button id="button1">API Key</button>-->
                 <div id="header">
-                    <button id="gothere-button" class="variable-text">GoThere</button>
-                    <p id="address-text" class="medium-text"></p>
+                    <button id="gothere-button" class="title-text">GoThere</button>
+                    <p id="address-text" class="address-text"></p>
                 </div>
             </div>
-            <div id="arrow-container" class="arrow">
+            <div id="arrow-container" class="arrow transparent">
                 <div id="main-arrow"></div>
             </div>
-            <div id="map-container" class="map">
+            <div id="map-container" class="map opaque">
                 <div id="view-div"></div>
             </div>
         </div>
