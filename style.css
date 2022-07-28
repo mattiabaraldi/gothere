@@ -15,6 +15,10 @@
     }
   }
 
+.sassy-theme .esri-widget a {
+    background-color: green;
+}
+
 :root
 {
     --arrow-size: 100px;
