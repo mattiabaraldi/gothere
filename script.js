@@ -7,6 +7,7 @@ const mainArrow = document.querySelector("#main-arrow");
 const mapContainer = document.querySelector("#map-container");
 const mapView = document.querySelector("#view-div");
 const gothereButton = document.querySelector('#gothere-button');
+const dashboardContainer = document.querySelector("#dashboard-container");
 
 let localLatitude;
 let localLongitude;
@@ -47,7 +48,8 @@ window.addEventListener("deviceorientationabsolute", function(e)
     {
         alpha = 360 - e.alpha;
         beta = e.beta;
-        gamma = e.gamma;
+        gamma = 360 - e.gamma;
+        document.documentElement.style.setProperty("--dash-angle", gamma + "deg");
         gyroReady = true;
     }, true);
 
@@ -200,8 +202,10 @@ gothereButton.addEventListener("click", function(e)
     {
         mapContainer.classList.toggle('opaque');
         arrowContainer.classList.toggle('opaque');
+        dashboardContainer.classList.toggle('opaque');
         mapContainer.classList.toggle('transparent');
         arrowContainer.classList.toggle('transparent');
+        dashboardContainer.classList.toggle('transparent');
     }
 });
 

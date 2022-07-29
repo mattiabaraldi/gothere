@@ -5,6 +5,7 @@
 :root {
     --arrow-size: 300px;
     --angle: 0deg;
+    --dash-angle: 0deg;
 }
 
 .title-text, .address-text {
@@ -84,21 +85,19 @@ body {
 
 #main-container {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: grid;
     grid-template-rows: 2fr 8fr;
     vertical-align: center;
     position: relative;
 }
 
-.arrow, .map {
-    grid-area: 2 / 1;
-}
-
 .arrow {
     width: 100%;
-    height: 100%;
-    padding-bottom: 20%;
+    height: 90%;
+    grid-area: 2 / 1;
+    top: 10%;
+    padding-bottom: 0%;
     position: relative;
     overflow: clip;
     opacity: 0;
@@ -110,8 +109,10 @@ body {
     height: 80%;
     left: 10%;
     right: 10%;
-    top: 10%;
-    bottom: 10%;
+    top: 20%;
+    bottom: 0%;
+    grid-row: 2 / span 2;
+    grid-column: 1;
     position: relative;
     opacity: 0;
     transition: all 1s linear;
@@ -119,7 +120,7 @@ body {
 
 #view-div {
     width: 100%;
-    height: 100%;
+    height: 90%;
     padding-bottom: 10%;
     position: relative;
 }
@@ -140,4 +141,30 @@ body {
 
 .opaque {
     opacity: 100%;
+}
+
+#dashboard-container {
+    grid-area: 3 / 1;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+}
+
+.round-gravity {
+    /*width: 20vw;
+    height: 20vw;*/
+    bottom: 5vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    align-items: top;
+    border: 1px black solid;
+    border-radius: 50%;
+    transform: rotate(var(--dash-angle));
+    transition: all 1s linear;
+    text-align: center;
+    font-size: 5vw;
+    padding: 5vw;
 }
