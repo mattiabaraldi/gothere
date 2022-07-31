@@ -49,6 +49,7 @@ body {
     justify-content: center;
     flex-direction: column;
     gap: 1em;
+    transition: all 1s linear;
 }
 
 #gothere-button {
@@ -62,6 +63,7 @@ body {
     color: black;
     background-color: white;
     border: 1px black solid;
+    transition: all 1s linear;
 }
 
 #gothere-button:hover {background-color: rgb(250, 250, 250)}
@@ -160,8 +162,8 @@ body {
     margin-right: auto;
     margin-top: 0;
     align-items: top;
-    border: 1px black solid;
-    border-radius: 50%;
+    /*border: 1px black solid;
+    border-radius: 50%;*/
     transform: rotate(var(--dash-angle));
     transition: all 1s linear;
     text-align: center;

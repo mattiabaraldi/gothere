@@ -9,16 +9,24 @@ const mapView = document.querySelector("#view-div");
 const gothereButton = document.querySelector('#gothere-button');
 const dashboardContainer = document.querySelector("#dashboard-container");
 
+const updateInterval = 500;
+const updatePositionInterval = 1000;
+
 let localLatitude;
 let localLongitude;
 let targetLatitude;
 let targetLongitude;
 let currentAngle = 0;
 let targetAngle = 0;
+let dashAngle = 0;
 let alpha;
 let beta;
 let gamma;
 let position;
+let distance = 0;
+let distanceUnit = "km";
+let highAccuracy = false;
+let speed = 0;
 let gyroReady = false;
 let positionReady = false;
 let targetReady = false;
@@ -43,13 +51,18 @@ Promise.all([navigator.permissions.query({ name: "accelerometer" }),
          }
    });
 
+dashboardContainer.addEventListener('click', function(e)
+   {
+        dashAngle = (dashAngle - 90) % 360;
+        document.documentElement.style.setProperty("--dash-angle", dashAngle + "deg");
+   });
+
 // Routine di aggiornamento orientamento
 window.addEventListener("deviceorientationabsolute", function(e) 
     {
         alpha = 360 - e.alpha;
         beta = e.beta;
-        gamma = 360 - e.gamma;
-        document.documentElement.style.setProperty("--dash-angle", gamma + "deg");
+        gamma = e.gamma;
         gyroReady = true;
     }, true);
 
@@ -154,6 +167,7 @@ setInterval(function()
             {
                 localLongitude = position.coords.longitude;
                 localLatitude = position.coords.latitude;
+                Speed.get(localLongitude, localLatitude, updatePositionInterval);
                 positionReady = true;
             },
             function(error) // Posizione non trovata
@@ -161,11 +175,11 @@ setInterval(function()
                 console.log(error);
                 positionReady = false;
             },
-            {enableHighAccuracy: true}
+            {enableHighAccuracy: highAccuracy}
         );
-    }, 10000);
+    }, updatePositionInterval);
 
-// Giro freccia
+// Update grafica
 setInterval(function()
     {
         if(!positionReady)
@@ -188,8 +202,11 @@ setInterval(function()
         targetAngle = currentAngle + delta;
 
         document.documentElement.style.setProperty("--angle", targetAngle + "deg");
+        Distance.get();
+        document.querySelector("#distance").innerHTML = distance + distanceUnit;
+        document.querySelector("#speed").innerHTML = speed + "km/h";
 
-    }, 500);
+    }, updateInterval);
 
 function transitionToArrow()
 {
@@ -209,9 +226,93 @@ gothereButton.addEventListener("click", function(e)
     }
 });
 
-/*button1.addEventListener("click", clickButton1);
-function clickButton1(event)
-{
-    localStorage.setItem("api-key", document.querySelector("#input1").value);
-}*/
+class Speed {
+    
+    static latlongCoeff = 111.32 * 3600; // km in 1 grado latlong * secondi in un'ora * millisecondi in un secondo
+    static lastX = null;
+    static lastY = null;
+    static lastSpeed = 0;
 
+    constructor() {}
+
+    static get(newX, newY, dt) { 
+        if(this.lastX != null)
+        {
+            dt /= 1000.0;
+            let diffXSquared = (this.lastX - newX)**2;
+            let diffYSquared = (this.lastY - newY)**2;
+            let tempSquaredDistance = diffXSquared + diffYSquared;
+            let tempDistance = Math.sqrt(tempSquaredDistance);
+            let newSpeed = Math.floor(this.latlongCoeff * tempDistance / dt);
+
+            this.lastX = newX;
+            this.lastY = newY;
+
+            let acceleration = (newSpeed - this.lastSpeed) / dt;
+            if(Math.abs(acceleration) > 10 || ((speed == 0) && (0 < newSpeed < 10)))
+            {
+                this.lastSpeed = Math.floor((4 * this.lastSpeed + newSpeed) / 5);
+            }
+            else
+            {
+                this.lastSpeed = newSpeed;
+                speed = newSpeed;
+            }
+        }
+        else
+        {
+            this.lastX = newX;
+            this.lastY = newY;
+        }
+    }
+
+    static setPosition(X, Y) {
+        this.lastX = X;
+        this.lastY = Y;
+    }
+}
+
+class Distance {
+
+    constructor() {}
+
+    static get() {
+
+        //SOURCE: https://www.movable-type.co.uk/scripts/latlong.html
+        const piCoeff = Math.PI/180;
+        const R = 6371e3; // metres
+        const φ1 = localLatitude * piCoeff; // φ, λ in radians
+        const φ2 = targetLatitude * piCoeff;
+        const Δφ = (targetLatitude-localLatitude) * piCoeff;
+        const Δλ = (targetLongitude-localLongitude) * piCoeff;
+
+        const a =   Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        let d = R * c; // in metres
+        
+        if(d >= 1000)
+        {
+            highAccuracy = false;
+            distanceUnit = "km";
+            d /= 1000.0;
+            if(d >= 100)
+                d = Math.floor(d);
+            else if(d >= 10)
+                d = d.toFixed(1);
+            else
+                d = d.toFixed(2);
+        }
+        else
+        {
+            highAccuracy = true;
+            distanceUnit = "m";
+            d = Math.floor(d);
+        }
+        
+        distance = d;
+    }
+
+}
