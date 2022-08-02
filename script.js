@@ -232,6 +232,7 @@ class Speed {
     static lastX = null;
     static lastY = null;
     static lastSpeed = 0;
+    static cooldownFilter = 3;
 
     constructor() {}
 
@@ -248,8 +249,19 @@ class Speed {
             this.lastX = newX;
             this.lastY = newY;
 
-            let acceleration = (newSpeed - this.lastSpeed) / dt;
-            if(Math.abs(acceleration) > 10 || ((speed == 0) && (0 < newSpeed < 10)))
+            if(newSpeed > 0) {
+                if(this.countdownFilter == 0) {
+                    speed = newSpeed;
+                } else if(this.countdownFilter > 0) {
+                    this.countdownFilter--;
+                }
+            } else {
+                speed = 0;
+                this.countdownFilter = 3;
+            }
+
+            /*let acceleration = (newSpeed - this.lastSpeed) / dt;
+            if(acceleration > 10 || ((speed == 0) && (0 < newSpeed < 10)))
             {
                 this.lastSpeed = Math.floor((4 * this.lastSpeed + newSpeed) / 5);
             }
@@ -257,7 +269,7 @@ class Speed {
             {
                 this.lastSpeed = newSpeed;
                 speed = newSpeed;
-            }
+            }*/
         }
         else
         {
