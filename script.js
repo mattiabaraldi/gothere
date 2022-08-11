@@ -233,32 +233,46 @@ class Speed {
     static lastY = null;
     static lastSpeed = 0;
     static cooldownFilter = 3;
+    static totalDeltaT;
 
     constructor() {}
 
     static get(newX, newY, dt) { 
         if(this.lastX != null)
         {
-            dt /= 1000.0;
-            let diffXSquared = (this.lastX - newX)**2;
-            let diffYSquared = (this.lastY - newY)**2;
-            let tempSquaredDistance = diffXSquared + diffYSquared;
-            let tempDistance = Math.sqrt(tempSquaredDistance);
-            let newSpeed = Math.floor(this.latlongCoeff * tempDistance / dt);
+            if((speed == 0) || ((this.lastX != newX) || (this.lastY != newY)))
+            {
+                this.cyclesNumber = 1;
+                //dt /= 1000.0;
+                //dt *= this.cyclesNumber;
+                let diffXSquared = (this.lastX - newX)**2;
+                let diffYSquared = (this.lastY - newY)**2;
+                let tempSquaredDistance = diffXSquared + diffYSquared;
+                let tempDistance = Math.sqrt(tempSquaredDistance);
+                let newSpeed = Math.floor(this.latlongCoeff * tempDistance / this.totalDeltaT);
 
-            this.lastX = newX;
-            this.lastY = newY;
+                this.lastX = newX;
+                this.lastY = newY;
 
-            if(newSpeed > 0) {
+                speed = newSpeed;
+            }
+            else
+            {
+                this.totalDeltaT += dt / 1000.0;
+            }
+
+            /*if(newSpeed > 0) {
                 if(this.countdownFilter == 0) {
                     speed = newSpeed;
+                    debugger;
                 } else if(this.countdownFilter > 0) {
                     this.countdownFilter--;
+                    debugger;
                 }
             } else {
                 speed = 0;
                 this.countdownFilter = 3;
-            }
+            }*/
 
             /*let acceleration = (newSpeed - this.lastSpeed) / dt;
             if(acceleration > 10 || ((speed == 0) && (0 < newSpeed < 10)))
